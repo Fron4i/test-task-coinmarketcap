@@ -9,6 +9,63 @@
 
 ---
 
+## Быстрый старт в Docker
+
+### Установка Docker, если ещё не установлен
+
+## ВАЖНО - перед началом установки НЕОБХОДИМО ОТКЛЮЧИТЬ VPN - иначе докер не сможет скачать свои компоненты!!!
+
+1. **Windows / macOS** – скачайте и установите Docker Desktop с официального сайта:
+   https://docs.docker.com/desktop/
+2. **Ubuntu / Debian**
+   ```bash
+   sudo apt-get update
+   sudo apt-get install -y ca-certificates curl gnupg lsb-release
+   curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /usr/share/keyrings/docker-archive-keyring.gpg
+   echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/docker-archive-keyring.gpg] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
+   sudo apt-get update
+   sudo apt-get install -y docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
+   sudo usermod -aG docker $USER
+   newgrp docker  # выйти/войти для применения
+   sudo systemctl start docker
+   ```
+3. Проверьте:
+   ```bash
+   docker --version
+   docker compose version
+   ```
+
+---
+
+Требования: установлен Docker и Docker Compose v2.
+
+1. Соберите и запустите контейнеры командой:
+
+   ```bash
+   docker compose up --build -d
+   ```
+
+   Будут подняты два сервиса:
+
+   - **db** — PostgreSQL 15 (порт `5432`, данные тома `db-data`)
+   - **app** — PHP 8.1 + Slim API + фронтенд (порт `8000`)
+
+2. Откройте браузер и перейдите по адресу:
+   `http://localhost:8000`
+
+3. Чтобы остановить и удалить контейнеры с томом данных:
+
+   ```bash
+   docker compose down -v
+   ```
+
+### Переменные окружения
+
+При необходимости вы можете изменить параметры БД, отредактировав их в `docker-compose.yml`.  
+Скрипт `/entrypoint.sh` при старте контейнера **автоматически** генерирует `config.php` на основе этих переменных, поэтому файл конфигурации не хранится в репозитории.
+
+---
+
 ## Описание проекта
 
 Веб-приложение для просмотра топ-50 криптовалют по капитализации с актуальными ценами, изменением за 24ч, капитализацией и объёмом торгов. Данные берутся с CoinGecko API, сохраняются в PostgreSQL. Фронтенд — на чистом JS, адаптивная таблица, интерактивные графики (Chart.js), поддержка светлой/тёмной темы.
