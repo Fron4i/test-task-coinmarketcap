@@ -1,0 +1,22 @@
+{
+	"name": "test-task/coinmarketcap",
+	"description": "Crypto prices viewer (Top 50) with PHP backend and plain JS frontend",
+	"type": "project",
+	"require": {
+		"php": ">=8.1",
+		"slim/slim": "^4.11",
+		"slim/psr7": "^1.5",
+		"guzzlehttp/guzzle": "^7.7",
+		"vlucas/phpdotenv": "^5.5"
+	},
+	"autoload": {
+		"psr-4": {
+			"App\\": "src/",
+			"App\\Core\\": "src/Core/"
+		}
+	},
+	"scripts": {
+		"stop": "sh -c 'kill -9 $(lsof -t -i:8000) 2>/dev/null || true'",
+		"dev": "composer run-script stop && nodemon --watch src --watch public --ext php,js,html,css --exec \"php -S localhost:8000 -t public public/router.php\""
+	}
+}

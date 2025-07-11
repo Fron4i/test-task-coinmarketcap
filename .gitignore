@@ -1,0 +1,17 @@
+/vendor/
+
+/config.php
+
+.idea/
+.vscode/
+
+*.log
+*.tmp
+*.cache
+
+.DS_Store
+Thumbs.db
+
+*.bak
+*.zip
+*.tar
